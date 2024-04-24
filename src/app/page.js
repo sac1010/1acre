@@ -47,11 +47,11 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="max-w-7xl min-h-screen mx-auto">
+    <div className="xl:max-w-7xl w-full px:4 xl:px-0 min-h-screen mx-auto">
       {count && (
         <div className=" text-center my-4 font-semibold">{`${count} Lands`}</div>
       )}
-      <div className="grid grid-cols-12 gap-10 py-5">
+      <div className="grid grid-cols-12 gap-7 py-5">
         {data.map((plot) => {
           return <CarouselCard key={plot?.id} data={plot} />;
         })}
