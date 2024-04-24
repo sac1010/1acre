@@ -1,5 +1,4 @@
-"use client";
-
+"use client"
 import CarouselCard from "@/components/CarouselCard";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
@@ -9,6 +8,8 @@ export default function Home() {
   const [page, setPage] = useState(1);
   const [count, setCount] = useState();
   const [loading, setLoading] = useState(false);
+  const [isFetchingNextPage, setIsFetchingNextPage] = useState(false);
+  const [initialLoadCompleted, setInitialLoadCompleted] = useState(false);
   const observerTarget = useRef(null);
 
   useEffect(() => {
@@ -18,7 +19,8 @@ export default function Home() {
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
-        if (entries[0].isIntersecting) {
+        if (initialLoadCompleted && entries[0].isIntersecting && !isFetchingNextPage) {
+          setIsFetchingNextPage(true);
           setPage((prevPage) => prevPage + 1);
         }
       },
@@ -34,7 +36,7 @@ export default function Home() {
         observer.unobserve(observerTarget.current);
       }
     };
-  }, []);
+  }, [isFetchingNextPage, initialLoadCompleted]); 
 
   const fetchData = async () => {
     setLoading(true);
@@ -47,13 +49,15 @@ export default function Home() {
       setData((prevData) => [...prevData, ...newData.results]);
       setCount(newData.count);
       setLoading(false);
+      setIsFetchingNextPage(false);
+      setInitialLoadCompleted(true); 
     } catch (error) {
       console.error("Error fetching data:", error);
       setLoading(false);
+      setIsFetchingNextPage(false); 
+      setInitialLoadCompleted(true);
     }
   };
-
-
 
   return (
     <div className="2xl:max-w-7xl w-full px-4 2xl:px-0 min-h-screen mx-auto">
@@ -79,3 +83,4 @@ export default function Home() {
     </div>
   );
 }
+
