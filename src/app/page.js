@@ -66,7 +66,7 @@ export default function Home() {
       )}
       <div className="grid grid-cols-12 gap-7 py-5">
         {data.map((plot) => {
-          return <CarouselCard key={plot?.id} data={plot} />;
+          return <CarouselCard key={plot.id} data={plot} />;
         })}
       </div>
       <div ref={observerTarget} className="w-full flex items-center justify-center">
