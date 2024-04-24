@@ -2,17 +2,39 @@
 
 import CarouselCard from "@/components/CarouselCard";
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export default function Home() {
   const [data, setData] = useState([]);
   const [page, setPage] = useState(1);
   const [count, setCount] = useState();
   const [loading, setLoading] = useState(false);
+  const observerTarget = useRef(null);
 
   useEffect(() => {
     fetchData();
   }, [page]);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting) {
+          setPage((prevPage) => prevPage + 1);
+        }
+      },
+      { threshold: 1 }
+    );
+
+    if (observerTarget.current) {
+      observer.observe(observerTarget.current);
+    }
+
+    return () => {
+      if (observerTarget.current) {
+        observer.unobserve(observerTarget.current);
+      }
+    };
+  }, []);
 
   const fetchData = async () => {
     setLoading(true);
@@ -31,34 +53,28 @@ export default function Home() {
     }
   };
 
-  const handleScroll = () => {
-    if (
-      window.innerHeight + document.documentElement.scrollTop ===
-      document.documentElement.offsetHeight
-    ) {
-      console.log("next page")
-      setPage(prevPage => prevPage + 1); 
-    }
-  };
 
-  useEffect(() => {
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
 
   return (
     <div className="2xl:max-w-7xl w-full px-4 2xl:px-0 min-h-screen mx-auto">
       {count && (
-        <div className=" text-center my-4 font-semibold">{`${count} Lands`}</div>
+        <div className=" text-center my-4 font-bold text-xl">{`${count} Lands`}</div>
       )}
       <div className="grid grid-cols-12 gap-7 py-5">
         {data.map((plot) => {
           return <CarouselCard key={plot?.id} data={plot} />;
         })}
       </div>
-      <div className="w-full flex items-center justify-center">
-
-      {loading && <Image width={100} alt="loader" unoptimized height={100} src={"/loader.gif"}/>}
+      <div ref={observerTarget} className="w-full flex items-center justify-center">
+        {loading && (
+          <Image
+            width={100}
+            alt="loader"
+            unoptimized
+            height={100}
+            src={"/loader.gif"}
+          />
+        )}
       </div>
     </div>
   );

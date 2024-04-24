@@ -36,10 +36,15 @@ const CarouselCard = ({ data }) => {
         })}
       </Carousel>
       <div className=" py-4 w-full px-4">
-        <div className="text-lg font-semibold">
-          {data.village_name}, {data.mandal_name}
+        <div className="text-lg font-semibold flex items-center gap-5">
+          <div className="">
+          {data.village_name}, {data.mandal_name} 
+          </div>
+          <img src="./verified-active.svg" className="w-5 h-5" alt="verified" />
+          {data.is_exact && <img src="./property-vote.svg" className="w-5 h-5" alt="vote" />}
+
         </div>
-        <div className="text-lg font-semibold">{data.district_name}</div>
+        <div className="text-lg font-semibold my-1">{data.district_name}</div>
         <div className="text-sm">
           {data.total_land_size_in_acres.acres !== 0 && (
             <span className="font-semibold">{`${data.total_land_size_in_acres.acres} acres .`}</span>
