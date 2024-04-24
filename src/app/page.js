@@ -60,7 +60,7 @@ export default function Home() {
   };
 
   return (
-    <div className="2xl:max-w-7xl w-full px-4 2xl:px-0 min-h-screen mx-auto">
+    <div className="2xl:max-w-7xl w-full px-4 2xl:px-0 min-h-screen mx-auto flex flex-col items-center justify-center">
       {count && (
         <div className=" text-center my-4 font-bold text-xl">{`${count} Lands`}</div>
       )}
