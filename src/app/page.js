@@ -47,7 +47,7 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="xl:max-w-7xl w-full px:4 xl:px-0 min-h-screen mx-auto">
+    <div className="2xl:max-w-7xl w-full px-4 2xl:px-0 min-h-screen mx-auto">
       {count && (
         <div className=" text-center my-4 font-semibold">{`${count} Lands`}</div>
       )}
